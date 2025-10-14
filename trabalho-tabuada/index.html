@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Tabuada Interativo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Tabuada Interativo</h1>
+            <p class="subtitle">Atividade Prática - Estruturas de Repetição em JavaScript</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="instruction">
+                    <h2>Como usar:</h2>
+                    <ol>
+                        <li>Digite um número entre 1 e 10 no campo abaixo</li>
+                        <li>Clique no botão "Gerar Tabuada"</li>
+                        <li>Veja a tabuada completa sendo exibida</li>
+                    </ol>
+                </div>
+
+                <div class="input-group">
+                    <label for="numero">Digite um número (1 a 10):</label>
+                    <input type="number" id="numero" min="1" max="10" placeholder="Ex: 7">
+                    <button id="gerar-tabuada" class="btn-primary">Gerar Tabuada</button>
+                    <div class="error-message" id="error-message">
+                        ❌ Por favor, insira um número válido entre 1 e 10.
+                    </div>
+                </div>
+            </section>
+
+            <section class="result-section" id="result-section">
+                <h2 id="tabuada-title">Tabuada do <span id="numero-selecionado"></span></h2>
+                <div class="tabuada-container" id="tabuada-container">
+                    <!-- As operações serão inseridas aqui via JavaScript -->
+                </div>
+                
+                <div class="code-explanation">
+                    <h3>📝 Explicação do Código:</h3>
+                    <div class="code-block">
+                        <pre><code>// Estrutura de repetição FOR
+for (let i = 1; i <= 10; i++) {
+    const resultado = numero * i;
+    // Exibe cada linha da tabuada
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-info">
+                <p><strong>Disciplina:</strong> Desenvolvimento em JavaScript</p>
+                <p><strong>Unidade:</strong> 1 – Princípios do JavaScript</p>
+                <p><strong>Aula:</strong> 3 – Estruturas de Repetição</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
