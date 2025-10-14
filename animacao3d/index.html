@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animação Canvas - Círculos Coloridos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        canvas {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Animação Canvas - Círculos Coloridos</h1>
+    <p>Esta animação mostra círculos que se movem e mudam de cor ao longo do tempo. Clique em qualquer círculo para mudar sua cor!</p>
+    
+    <canvas id="animationCanvas" width="800" height="500"></canvas>
+    
+    <div class="controls">
+        <button id="addCircle">Adicionar Círculo</button>
+        <button id="clearCanvas">Limpar Canvas</button>
+    </div>
+
+    <script>
+        // Configuração inicial
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+        const addCircleBtn = document.getElementById('addCircle');
+        const clearCanvasBtn = document.getElementById('clearCanvas');
+        
+        // Array para armazenar os círculos
+        let circles = [];
+        
+        // Classe para representar um círculo
+        class Circle {
+            constructor(x, y, radius, color, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.originalColor = color;
+                this.colorChangeRate = Math.random() * 0.02 + 0.01;
+                this.colorPhase = Math.random() * Math.PI * 2;
+            }
+            
+            // Método para desenhar o círculo
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+            
+            // Método para atualizar a posição e cor do círculo
+            update() {
+                // Atualizar posição
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Verificar colisão com as bordas
+                if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+                    this.speedY = -this.speedY;
+                }
+                
+                // Atualizar cor (efeito de pulsação)
+                this.colorPhase += this.colorChangeRate;
+                const r = Math.floor(127 + 127 * Math.sin(this.colorPhase));
+                const g = Math.floor(127 + 127 * Math.sin(this.colorPhase + Math.PI/2));
+                const b = Math.floor(127 + 127 * Math.sin(this.colorPhase + Math.PI));
+                this.color = `rgb(${r}, ${g}, ${b})`;
+            }
+            
+            // Verificar se o ponto (x, y) está dentro do círculo
+            contains(x, y) {
+                const distance = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
+                return distance <= this.radius;
+            }
+            
+            // Método para mudar a cor do círculo aleatoriamente
+            changeColor() {
+                const colors = [
+                    '#FF5733', '#33FF57', '#3357FF', '#F3FF33', 
+                    '#FF33F3', '#33FFF3', '#FF8C33', '#8C33FF'
+                ];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Restaurar a cor original após 1 segundo
+                setTimeout(() => {
+                    this.color = this.originalColor;
+                }, 1000);
+            }
+        }
+        
+        // Função para criar um círculo aleatório
+        function createRandomCircle() {
+            const radius = Math.random() * 30 + 10;
+            const x = Math.random() * (canvas.width - radius * 2) + radius;
+            const y = Math.random() * (canvas.height - radius * 2) + radius;
+            const speedX = (Math.random() - 0.5) * 4;
+            const speedY = (Math.random() - 0.5) * 4;
+            const color = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+            
+            return new Circle(x, y, radius, color, speedX, speedY);
+        }
+        
+        // Inicializar com alguns círculos
+        for (let i = 0; i < 5; i++) {
+            circles.push(createRandomCircle());
+        }
+        
+        // Função de animação
+        function animate() {
+            // Limpar o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Atualizar e desenhar cada círculo
+            circles.forEach(circle => {
+                circle.update();
+                circle.draw();
+            });
+            
+            // Continuar a animação
+            requestAnimationFrame(animate);
+        }
+        
+        // Iniciar a animação
+        animate();
+        
+        // Adicionar evento de clique no canvas
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            
+            // Verificar se o clique foi em algum círculo
+            circles.forEach(circle => {
+                if (circle.contains(mouseX, mouseY)) {
+                    circle.changeColor();
+                }
+            });
+        });
+        
+        // Adicionar evento para o botão "Adicionar Círculo"
+        addCircleBtn.addEventListener('click', () => {
+            circles.push(createRandomCircle());
+        });
+        
+        // Adicionar evento para o botão "Limpar Canvas"
+        clearCanvasBtn.addEventListener('click', () => {
+            circles = [];
+        });
+    </script>
+</body>
+</html>
