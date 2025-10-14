@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokenpô - Pedra, Papel e Tesoura</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jokenpô</h1>
+            <p>Pedra, Papel e Tesoura</p>
+        </header>
+        
+        <main>
+            <div class="score-board">
+                <div class="score">
+                    <span id="player-score">0</span>
+                    <span>Você</span>
+                </div>
+                <div class="score">
+                    <span id="computer-score">0</span>
+                    <span>Computador</span>
+                </div>
+            </div>
+            
+            <div class="game-area">
+                <div class="player-section">
+                    <h2>Sua Escolha</h2>
+                    <div class="choices">
+                        <button class="choice-btn" data-choice="pedra">
+                            <span>✊</span>
+                            Pedra
+                        </button>
+                        <button class="choice-btn" data-choice="papel">
+                            <span>✋</span>
+                            Papel
+                        </button>
+                        <button class="choice-btn" data-choice="tesoura">
+                            <span>✌️</span>
+                            Tesoura
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="vs-section">
+                    <div class="choices-display">
+                        <div class="choice-display" id="player-choice">
+                            <span>?</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="choice-display" id="computer-choice">
+                            <span>?</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result" id="result">
+                        <p>Faça sua jogada!</p>
+                    </div>
+                    
+                    <button id="reset-btn" class="reset-btn">Jogar Novamente</button>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Desenvolvimento em JavaScript - Aula Prática</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
